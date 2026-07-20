@@ -4,3 +4,8 @@ export interface Info {
     message: string;
     datetime: string;
 }
+
+export interface InfoMutation {
+    author: string;
+    message: string;
+}

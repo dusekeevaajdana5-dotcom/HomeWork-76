@@ -1,5 +1,5 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
-import type { Info } from "../../interfaces";
+import type {Info, InfoMutation} from "../../interfaces";
 import axiosApi from "../../axiosApi.ts";
 
 export const getMessages = createAsyncThunk<Info[]>(
@@ -7,5 +7,12 @@ export const getMessages = createAsyncThunk<Info[]>(
     async () => {
         const { data: messages } = await axiosApi("/messages");
         return messages;
+    }
+)
+
+export const createMessage = createAsyncThunk<void, InfoMutation>(
+    "messages/createMessage",
+    async (message) => {
+        await axiosApi.post("/messages", message);
     }
 )

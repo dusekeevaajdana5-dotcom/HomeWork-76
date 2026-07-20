@@ -1,15 +1,17 @@
 import type { Info } from "../../interfaces.ts";
 import { createSlice } from "@reduxjs/toolkit";
-import { getMessages } from "./messagesThunks.ts";
+import {createMessage, getMessages} from "./messagesThunks.ts";
 
 interface State {
     items: Info[];
     fetchLoading: boolean;
+    createLoading: boolean;
 }
 
 const initialState: State = {
     items: [],
     fetchLoading: false,
+    createLoading: false,
 };
 
 const messageSlice = createSlice({
@@ -28,12 +30,24 @@ const messageSlice = createSlice({
             .addCase(getMessages.rejected, (state) => {
                 state.fetchLoading = false;
             });
+
+        builder
+            .addCase(createMessage.pending, (state) => {
+                state.createLoading = true;
+            })
+            .addCase(createMessage.fulfilled, (state, { payload }) => {
+                state.createLoading = false;
+            })
+            .addCase(createMessage.rejected, (state) => {
+                state.createLoading = false;
+            });
     },
     selectors: {
         messages: (state) => state.items,
         fetchLoading: (state) => state.fetchLoading,
+        createLoading: (state) => state.createLoading
     },
 });
 
 export const messageReducer = messageSlice.reducer;
-export const { messages, fetchLoading } = messageSlice.selectors;
+export const { messages, fetchLoading, createLoading} = messageSlice.selectors;
